@@ -1,0 +1,14 @@
+a = open('int_data.txt', 'r')
+a = a.readlines()
+for i in range(0, len(a) - 1):
+    a[i] = a[i].rstrip()
+    a[i] = int(a[i])
+time = a[len(a) - 1]
+time = time.rstrip()
+time = int(time)
+a.pop()
+for i in range(0, time, 1):
+    last = a[len(a) - 1]
+    a.pop()
+    a.insert(last, last)
+print(a)

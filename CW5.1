@@ -1,0 +1,7 @@
+from random import *
+input = open('int_data.txt', 'w')
+for i in range(1, 1000001, 1):
+    for k in range (1, 101, 1):
+        print(randint(0, 100), file = output, end = ' ')
+    print('\n')
+input.close()
