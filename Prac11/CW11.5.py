@@ -17,15 +17,21 @@ class Point:
         return math.sqrt((self.x - other.x) ** 2 + (self.y - other.y) ** 2)
     def Perimetr(self, other1, other2):
         return self.DistanceTo(other1) + other1.DistanceTo(other2) + other2.DistanceTo(self)
-    
+    def Square(self, Other1, Other2):
+        half_of_perimetr = self.Perimetr(Other1, Other2)
+        a = self.DistanceTo(Other1)
+        b = Other1.DistanceTo(Other2)
+        c = Other2.DistanceTo(self)
+        return math.sqrt(half_of_perimetr * (half_of_perimetr - a) * (half_of_perimetr - b) * (half_of_perimetr - c))
+
 N = int(input())
 Points = []
 for i in range(N):
     Points.append(Point(input()))
-Max_perimetr = Points[0].Perimetr(Points[1], Points[2])
+Max_square = Points[0].Square(Points[1], Points[2])
 for point1 in Points:
       for point2 in Points:
           for point3 in Points:
-              if point1.Perimetr(point2, point3) > Max_perimetr:
-                  Max_perimetr = point1.Perimetr(point2, point3)
-print(Max_perimetr)
+              if point1.Square(point2, point3) > Max_square:
+                  Max_square = point1.Square(point2, point3)
+print(Max_square)
