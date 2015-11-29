@@ -1,5 +1,5 @@
-a = open('float_data.txt', 'r')
-a = a.readlines()
+float_data = open('float_data.txt', 'r')
+a = float_data.readlines()
 for i in range(0, len(a)):
     a[i] = a[i].rstrip()
     a[i] = float(a[i])

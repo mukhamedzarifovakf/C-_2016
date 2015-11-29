@@ -1,5 +1,5 @@
-a = open('int_data.txt', 'r')
-a = a.readlines()
+int_data = open('int_data.txt', 'r')
+a = int_data.readlines()
 for i in range(0, len(a)):
     a[i] = a[i].rstrip()
     a[i] = int(a[i])

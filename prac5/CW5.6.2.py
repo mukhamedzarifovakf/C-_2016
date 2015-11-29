@@ -1,8 +1,8 @@
 import math
-a = open('float_data.txt', 'r')
-a = a.readlines()
-for i in range(0, len(a)):
-    a[i] = a[i].rstrip()
+float_data = open('float_data.txt', 'r')
+a = float_data.readline()
+a = a.split()
+for i in range(len(a)):
     a[i] = float(a[i])
 average = sum(a) / len(a)
 b = []
