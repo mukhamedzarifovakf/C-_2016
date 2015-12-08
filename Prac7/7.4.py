@@ -1,12 +1,23 @@
 import math
 import pylab
-import matplotlib as plt
+from matplotlib import mlab
 
-xmin = -20
-xmax = 20
-dx = 0.2
-ymin = -20
-ymax = 20
-dy = 0.2
-xlist = plt.mlab.frange(xmin, xmax, dx)
-xlist = plt.mlab.frange(ymin, ymax, dy)
+a = 1
+
+tmin = -20.0
+tmax = 20.0
+
+dt = 0.01
+tlist = mlab.frange (tmin, tmax, dt)
+
+pylab.ion()
+
+for n in range(250):
+        xlist = [math.sin(t+a) for t in tlist]
+        ylist = [math.cos(2*t) for t in tlist]
+        pylab.clf()
+        pylab.plot (xlist, ylist)
+        pylab.draw()
+        a += 0.05
+
+pylab.close()

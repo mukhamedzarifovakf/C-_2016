@@ -1,10 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-def y(x):
-    y = x*x-6-x
-    return y
-x = np.arange(-10, 10.01, 0.1)
-plt.plot(x, y(x), x, 0*x, lw = 1)
-plt.xlabel(r'$x$')
-plt.ylabel(r'$y(x)$')
+x=np.arange(-10,10.01,0.01)
+for i in x:
+    if i**2-i-6==0:
+        print(i)
+plt.plot(x,x**2-x-6)
+plt.title(r'$f(x)$')
 plt.show()
