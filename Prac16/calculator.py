@@ -1,9 +1,49 @@
+
+import argparse
 import sys
 
-if len(sys.argv) < 2:
-	print('At least 1 file must be specified')
-	exit(-1)
+parser = argparse.ArgumentParser(
+	description = 'Calculator'
+	)
+
+parser.add_argument(
+	'values',
+	metavar = 'VALUES',
+	type = float,
+	nargs = 2,
+	help = 'input values'	
+	)
+
+parser.add_argument(
+	'-a',
+	'--action',
+	metavar = 'ACTION',
+	required = 'True',
+	action = 'store',
+	help = 'action you wish to perform'
+	)
+
+parser.add_argument(
+	'-v',
+	'--verbose',
+	action = 'store_true',
+	help = 'print the calculation'
+	)
+
+args = parser.parse_args()
+
+res = 0
+
+if args.action == '+':
+	res = args.values[0] + args.values[1]
+elif args.action == '-':
+	res = args.values[0] - args.values[1]
+elif args.action == '*':
+	res = args.values[0] * args.values[1]
+elif args.action == '/':
+	res = args.values[0] / args.values[1]
+
+if not args.verbose:
+	print(res)
 else:
-	for fl in sys.argv[1:]:
-		fl = open(sys.argv[i], 'r')
-		print(''.join(fl.readlines()))
+	print(str(args.values[0]) + args.action + str(args.values[1]) + '=' + str(res))
