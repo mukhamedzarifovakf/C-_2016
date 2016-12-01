@@ -1,6 +1,0 @@
-A = set(input())
-B = set(input())
-C = set(input())
-D = set(input())
-E = ((A.difference(B)).intersection(C.difference(D))).union((D.difference(A)).intersection(B.difference(C)))
-print(E)
