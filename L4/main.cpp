@@ -1,85 +1,80 @@
-#include <cstdlib>
 #include <iostream>
-#include <cmath>
-
 using namespace std;
 
-struct Node       //РЎС‚СЂСѓРєС‚СѓСЂР° СЏРІР»СЏСЋС‰Р°СЏСЃСЏ Р·РІРµРЅРѕРј СЃРїРёСЃРєР°
+struct Node       //Структура являющаяся звеном списка
 {
-    int x;//Р—РЅР°С‡РµРЅРёРµ x Р±СѓРґРµС‚ РїРµСЂРµРґР°РІР°С‚СЊСЃСЏ РІ СЃРїРёСЃРѕРє
-    int y;
-    Node *next, *prev; //РЈРєР°Р·Р°С‚РµР»Рё РЅР° Р°РґСЂРµСЃР° СЃР»РµРґСѓСЋС‰РµРіРѕ Рё РїСЂРµРґС‹РґСѓС‰РµРіРѕ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР°
+    int x;
+    int y;     //Значение x будет передаваться в список
+    Node *next,*prev; //Указатели на адреса следующего и предыдущего элементов списка
+    Node()
+    {
+        x = 0;
+        y = 0;
+        next = nullptr;
+        prev = nullptr;
+    }
+    Node(int a, int b)
+    {
+        x = a;
+        y = b;
+        next = nullptr;
+        prev = nullptr;
+    }
 };
 
 
-struct List   //РЎРѕР·РґР°РµРј С‚РёРї РґР°РЅРЅС‹С… РЎРїРёСЃРѕРє
+struct List   //Создаем тип данных Список
 {
     Node *head;
-    Node *tail;  //РЈРєР°Р·Р°С‚РµР»Рё РЅР° Р°РґСЂРµСЃР° РЅР°С‡Р°Р»Р° СЃРїРёСЃРєР° Рё РµРіРѕ РєРѕРЅС†Р°
+    Node *tail;  //Указатели на адреса начала списка и его конца
+    List()
+    {
+        head = tail = nullptr;
+    }
 };
 
 
-void add( List *list, int x , int y)
+void add( List *list, int x, int y )
 {
-    Node *temp = new Node(); // Р’С‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РїРѕРґ РЅРѕРІС‹Р№ СЌР»РµРјРµРЅС‚ СЃС‚СЂСѓРєС‚СѓСЂС‹
-    temp->next = NULL;       // РЈРєР°Р·С‹РІР°РµРј, С‡С‚Рѕ РёР·РЅР°С‡Р°Р»СЊРЅРѕ РїРѕ СЃР»РµРґСѓСЋС‰РµРјСѓ Р°РґСЂРµСЃСѓ РїСѓСЃС‚Рѕ
-    temp->x = x;             // Р—Р°РїРёСЃС‹РІР°РµРј Р·РЅР°С‡РµРЅРёРµ РІ СЃС‚СЂСѓРєС‚СѓСЂСѓ
-    temp->y = y;
+    Node *temp = new Node(); // Выделение памяти под новый элемент структуры
+    temp->next = nullptr;       // Указываем, что изначально по следующему адресу пусто
+    temp->x = x;
+    temp->y = y;             // Записываем значение в структуру
 
-    if ( list->head != NULL ) // Р•СЃР»Рё СЃРїРёСЃРѕРє РЅРµ РїСѓСЃС‚
+    if ( list->head != nullptr ) // Если список не пуст
     {
-        temp->prev = list->tail; // РЈРєР°Р·С‹РІР°РµРј Р°РґСЂРµСЃ РЅР° РїСЂРµРґС‹РґСѓС‰РёР№ СЌР»РµРјРµРЅС‚ РІ СЃРѕРѕС‚РІ. РїРѕР»Рµ
-        list->tail->next = temp; // РЈРєР°Р·С‹РІР°РµРј Р°РґСЂРµСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ Р·Р° С…РІРѕСЃС‚РѕРј СЌР»РµРјРµРЅС‚Р°
-        list->tail = temp;       //РњРµРЅСЏРµРј Р°РґСЂРµСЃ С…РІРѕСЃС‚Р°
+        temp->prev = list->tail; // Указываем адрес на предыдущий элемент в соотв. поле
+        list->tail->next = temp; // Указываем адрес следующего за хвостом элемента
+        list->tail = temp;       //Меняем адрес хвоста
     }
-    else //Р•СЃР»Рё СЃРїРёСЃРѕРє РїСѓСЃС‚РѕР№
+    else //Если список пустой
     {
-        temp->prev = NULL; // РџСЂРµРґС‹РґСѓС‰РёР№ СЌР»РµРјРµРЅС‚ СѓРєР°Р·С‹РІР°РµС‚ РІ РїСѓСЃС‚РѕС‚Сѓ
-        list->head = list->tail = temp;    // Р“РѕР»РѕРІР°=РҐРІРѕСЃС‚=С‚РѕС‚ СЌР»РµРјРµРЅС‚, С‡С‚Рѕ СЃРµР№С‡Р°СЃ РґРѕР±Р°РІРёР»Рё
+        temp->prev = nullptr; // Предыдущий элемент указывает в пустоту
+        list->head = list->tail = temp;    // Голова=Хвост=тот элемент, что сейчас добавили
     }
 }
+
 
 void print( List * list )
 {
-    Node * temp = list->head;  // Р’СЂРµРјРµРЅРЅРѕ СѓРєР°Р·С‹РІР°РµРј РЅР° Р°РґСЂРµСЃ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
-    while( temp != NULL )      // РџРѕРєР° РЅРµ РІСЃС‚СЂРµС‚РёРј РїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ
+    Node * temp = list->head;  // Временно указываем на адрес первого элемента
+    while( temp != nullptr )      // Пока не встретим пустое значение
     {
-        cout << temp->x <<" " << temp->y << endl; //Р’С‹РІРѕРґРёРј Р·РЅР°С‡РµРЅРёРµ РЅР° СЌРєСЂР°РЅ
-        temp = temp->next;     //РЎРјРµРЅР° Р°РґСЂРµСЃР° РЅР° Р°РґСЂРµСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
-    }
-    cout<<"\n";
-}
-
-void print(List * list, int number) {
-    Node * temp = list->head;  // Р’СЂРµРјРµРЅРЅРѕ СѓРєР°Р·С‹РІР°РµРј РЅР° Р°РґСЂРµСЃ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
-    while( (temp != NULL) && (number > 0))      // РџРѕРєР° РЅРµ РІСЃС‚СЂРµС‚РёРј РїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ
-    {
-        cout << temp->x <<" " << temp->y << endl; //Р’С‹РІРѕРґРёРј Р·РЅР°С‡РµРЅРёРµ РЅР° СЌРєСЂР°РЅ
-        temp = temp->next;     //РЎРјРµРЅР° Р°РґСЂРµСЃР° РЅР° Р°РґСЂРµСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
-        number--;
-    }
-    cout<<"\n";
-}
-
-void findFirst (List *list, int check_x, int check_y){
-    Node * temp = list->head;
-    int i = 1;
-    while (temp != NULL){
-        if ((temp->x == check_x) && (temp->y == check_y)) {
-            cout << "It's on the " << i << " place from the begin" << endl;
-            break;
-        }
-        temp = temp->next;
-        i++;
+        cout << "(" << temp->x << ";" << temp->y << ")" << " "; //Выводим значение на экран
+        cout << "\n";
+        temp = temp->next;     //Смена адреса на адрес следующего элемента
     }
 }
 
-void findLast (List *list, int check_x, int check_y) {
+
+
+void search_node_last (List *list, int check_x, int check_y) //упражнение 3
+{
     Node * temp = list->tail;
     int i = 1;
     while (temp != NULL){
         if ((temp->x == check_x) && (temp->y == check_y)) {
-            cout << "It's on the " << i << " place from the end" << endl;
+            cout << i << "from the end" << endl;
             break;
         }
         temp = temp->prev;
@@ -87,124 +82,93 @@ void findLast (List *list, int check_x, int check_y) {
     }
 }
 
-void addIn (List *list, int index, int X, int Y) {
-    Node * temp = list->head;
-    for(int i = 1; i <= index; i++){
-        if (temp->next != NULL)
-            temp = temp->next;
-        else
-            break;
-    }
-    Node * newElem = new Node;
-    newElem->x = X;
-    newElem->y = Y;
-    if (temp->prev != NULL) {
-        temp->prev->next = newElem;
-        newElem->prev = temp->prev;
-        temp->prev = newElem;
-        newElem->next = temp;
-    } else if (temp == list->head) {
-        newElem->next = temp;
-        newElem->prev = temp->prev;
-        temp->prev = newElem;
-        list->head = newElem;
-    }
-}
 
-void popIn(List *list, int index){
-    Node * temp = list->head;
-    for(int i = 2; i < index; i++){
-        temp = temp->next;
-    }
-    Node * new_tmp = temp->next->next;
-    temp->next = new_tmp;
-    new_tmp->prev = temp;
-}
 
-bool evenElementX(int x){
-    if (x % 2 == 0)
-        return true;
-    else
-        return false;
-}
-
-List *criterion( List * list , bool (*func)(int))
+void search_node_first (List *list, int check_x, int check_y) //упражнение 3
 {
-    Node * temp = list->head;// Р’СЂРµРјРµРЅРЅРѕ СѓРєР°Р·С‹РІР°РµРј РЅР° Р°РґСЂРµСЃ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р°
-    List * newList = new List;
+    Node * temp = list->head;
+    int i = 1;
+    while (temp != NULL){
+        if ((temp->x == check_x) && (temp->y == check_y)) {
+            cout << i << "from the beginning" << endl;
+            break;
+        }
+        temp = temp->next;
+        i++;
+    }
+}
 
-    while( temp != NULL )      // РџРѕРєР° РЅРµ РІСЃС‚СЂРµС‚РёРј РїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ
+
+
+void insert_in (List *list, Node *node, int i)  // упражнение 4
+{
+    Node *temp = list->head;
+    while ((i > 1) && (temp))
     {
-        if (func(temp->x)){
-            add(newList, temp->x, temp->y);
+        temp= temp->next;
+        i--;
+    }
+    if (temp)
+    {
+        if (list->tail == temp)
+        {
+            list->tail = node;
         }
-        temp = temp->next;     //РЎРјРµРЅР° Р°РґСЂРµСЃР° РЅР° Р°РґСЂРµСЃ СЃР»РµРґСѓСЋС‰РµРіРѕ СЌР»РµРјРµРЅС‚Р°
-    }
-    return newList;
-}
-
-double centerMassX(List *list){
-    Node *temp = list->head;
-    double sum = 0;
-    double n = 0;
-    while( temp != NULL ){
-        sum += temp->x;
-        n += 1;
-        temp = temp->next;
-    }
-    return sum/n;
-}
-
-double centerMassY(List *list){
-    Node *temp = list->head;
-    double sum = 0;
-    double n = 0;
-    while( temp != NULL ){
-        sum += temp->y;
-        n += 1;
-        temp = temp->next;
-    }
-    return sum/n;
-}
-
-void sortListCenterMass (List *list){
-    bool flag = 1;
-    double cenY = centerMassY(list);
-    double cenX = centerMassX(list);
-    int t;
-    while(flag){
-        Node *temp = list->head;
-        Node *nextTemp = temp->next;
-        flag = 0;
-        while (nextTemp != NULL){
-            if(((temp->x - cenX) + (temp->y - cenY)) > ((nextTemp->x - cenX) + (nextTemp->y - cenY))){
-                t = temp->x;
-                temp->x=nextTemp->x;
-                nextTemp->x=t;
-                t = temp->y;
-                temp->y=nextTemp->y;
-                nextTemp->y=t;
-                flag=1;
-            }
-            temp = temp->next;
-            nextTemp = nextTemp->next;
+        if (list->head == temp)
+        {
+            list->head = node;
         }
+        node->prev = temp->prev;
+        node->next = temp;
+        if (temp->prev != nullptr)
+        {
+            temp->prev->next = node;
+        }
+        temp->prev = node;
+    }
+    else
+    {
+        add(list, node->x, node->y);
     }
 }
 
-int main(void){
-
-    List *list = new List;
-    for (int i = 0; i < 20; i++) {
-        int x = rand()/1000000;
-        int y = rand()/1000000;
-        add(list, x, y);
+void  delete_from (List *list, int i)  // упражнение 5
+{
+    Node *temp = list->head;
+    while ((i > 1) && (temp))
+    {
+        temp= temp->next;
+        i--;
     }
-    List *new_list = criterion(list, evenElementX);
-    print(new_list);
-    addIn(list, 0, 2, 2);
-    print(list);
-//    sortListCenterMass(list);
-//    print(list, 5);
-    return 0;
+    if (temp != nullptr)
+    {
+        if (list->tail == temp)
+        {
+            list->tail = temp->prev;
+        }
+        if (list->head == temp)
+        {
+            list->head = temp->next;
+        }
+        if (temp->prev != nullptr)
+        {
+            temp->prev->next = temp->next;
+        }
+        if(temp->next != nullptr)
+        {
+            temp->next->prev = temp->prev;
+        }
+        delete temp;
+    }
+}
+
+
+int main ()
+{
+    List list = List();
+    for (int i = 0; i < 10; i++)
+    {
+        add(&list, rand()%10, rand()%10);
+    }
+    print(&list);
 }

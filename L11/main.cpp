@@ -1,109 +1,72 @@
 #include <iostream>
+#include <vector>
 
+template <typename T>
 class CircularBuffer
 {
 public:
 
     CircularBuffer( int size )
     {
-        head = tail = length = 0;
-        bufferSize = size;
-        arr = new int[bufferSize];
+        head = tail = 0;
+        arr.reserve(size);
     }
 
-    ~CircularBuffer()
-    {
-        delete[] arr;
-    }
 
     // Добавить элемент
-    void put( const int & value )
+    void put( const T & value )
     {
-        if ( tail == bufferSize )
+        if ( tail == arr.capacity() )
         {
             tail = 0;
         }
 
-        arr[tail] = value;
+        arr.push_back(value);
         ++tail;
-        ++length;
     }
 
 
     // Извлечь последний элемент
-    int & pop()
+    T & pop()
     {
-        if ( head == bufferSize ) {
+
+        T & elem = arr[head];
+        ++head;
+        if ( head == arr.capacity() ) {
             head = 0;
         }
-        int & elem = arr[head];
-        ++head;
-        --length;
+        arr.resize(head);
         return elem;
     }
 
     // Кол-во элементов в буфере
     size_t size() const
     {
-        return length;
+        return arr.size();
     }
 
     // Ёмкость буфера
     size_t capacity() const
     {
-        return bufferSize;
+        return arr.capacity();
     }
 
-    int operator[] (int i)
+    //operator[]
+    T & operator[](int i)
     {
-        if(head + i >= bufferSize)
-        {
-            i -= bufferSize;
-        }
-        int & elem = arr[head + i];
+        T & elem = arr[i];
         return elem;
     }
 
+    //printBuffer
     void printBuffer()
     {
-        std::cout << head << ", " << tail << "; ";
-        for(int i = head; i < tail; i++)
+        std::cout << "BUFFER:" << head << " " << tail << " " << arr.size() << " " << arr.capacity() <<"{";
+        for (int i=head; i<tail;i++)
         {
-            int & elem = arr[i];
-            std::cout << elem << ",";
+            std::cout << " " << arr[i] << ",";
+
         }
-    }
-
-
-private:
-    int * arr;             // массив-буфер
-    int bufferSize;        // размер буфера
-    int length;            // кол-во элементов в буффере
-    int head;              // индекс первого элемента
-    int tail;              // индекс последнего элемента
-};
-
-
-int main()
-{
-    CircularBuffer buf(3);
-
-    for( int i = 0; i < 10; ++i )
-    {
-        buf.put( i * 2 );
-        if ( buf.size() == buf.capacity() ) {
-            std::cout << "---------------" << std::endl;
-            while( buf.size() ) {
-                std::cout << buf.pop() << std::endl;
-            }
-        }
+        std::cout << "}" << std::endl;
 
     }
-
-    std::cout << "---------------" << std::endl;
-    while( buf.size() ) {
-        std::cout << buf.pop() << std::endl;
-    }
-    buf.printBuffer();
-    return 0;
-}
